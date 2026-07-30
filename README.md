@@ -1,4 +1,4 @@
-# Arianna Bakehouse
+# Ariana Bakehouse
 
 A pastry seller and journal, built the way GBC is built: hand-written static HTML,
 zero dependencies, Supabase behind it for anything that changes.

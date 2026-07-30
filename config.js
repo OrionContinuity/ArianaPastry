@@ -1,4 +1,4 @@
-/* Arianna Bakehouse — site config.
+/* Ariana Bakehouse — site config.
 
    These two values are PUBLIC by design. The publishable key ships in every
    page load; it is not a secret. What actually protects the data is the

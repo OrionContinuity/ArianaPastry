@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* Arianna Bakehouse — bake the seed journal entries into real static pages.
+/* Ariana Bakehouse — bake the seed journal entries into real static pages.
  *
  * Why this exists: the journal reads from Supabase at runtime, which is fine for
  * humans but poor for crawlers. These generated pages give each seed entry a real
@@ -148,8 +148,8 @@ function page(p, idx) {
         wordCount: p.body.split(/\s+/).length,
         inLanguage: 'en-US',
         mainEntityOfPage: { '@type': 'WebPage', '@id': url },
-        author: { '@type': 'Organization', name: 'Arianna Bakehouse', url: SITE + '/' },
-        publisher: { '@type': 'Bakery', name: 'Arianna Bakehouse', url: SITE + '/' },
+        author: { '@type': 'Organization', name: 'Ariana Bakehouse', url: SITE + '/' },
+        publisher: { '@type': 'Bakery', name: 'Ariana Bakehouse', url: SITE + '/' },
       },
       {
         '@type': 'BreadcrumbList',
@@ -167,14 +167,14 @@ function page(p, idx) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(p.title)} — Arianna Bakehouse</title>
+<title>${esc(p.title)} — Ariana Bakehouse</title>
 <meta name="description" content="${esc(p.excerpt)}">
 <link rel="canonical" href="${url}">
 <meta name="theme-color" content="#FBF6EF">
 <meta name="color-scheme" content="light">
 <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <meta property="og:type" content="article">
-<meta property="og:site_name" content="Arianna Bakehouse">
+<meta property="og:site_name" content="Ariana Bakehouse">
 <meta property="og:title" content="${esc(p.title)}">
 <meta property="og:description" content="${esc(p.excerpt)}">
 <meta property="og:url" content="${url}">
@@ -195,9 +195,9 @@ ${JSON.stringify(ld, null, 2)}
 
 <header>
   <div class="wrap nav">
-    <a class="brand" href="../../" aria-label="Arianna Bakehouse — home">
+    <a class="brand" href="../../" aria-label="Ariana Bakehouse — home">
       ${MARK}
-      <span class="wm">Arianna<span class="tag">Bakehouse</span></span>
+      <span class="wm">Ariana<span class="tag">Bakehouse</span></span>
     </a>
     <nav class="nav-links" aria-label="Primary">
       <a href="../">Journal</a>
@@ -230,11 +230,11 @@ ${JSON.stringify(ld, null, 2)}
 
 <footer>
   <div class="wrap">
-    <h4>Arianna Bakehouse</h4>
+    <h4>Ariana Bakehouse</h4>
     <p style="font-size:14px;color:#C9B8A8;max-width:40ch">A small bakery in Austin, Texas.
       Short list, long method, sold out by noon.</p>
     <div class="f-bar">
-      <span>&copy; ${new Date().getFullYear()} Arianna Bakehouse. Austin, Texas.</span>
+      <span>&copy; ${new Date().getFullYear()} Ariana Bakehouse. Austin, Texas.</span>
       <a class="f-nexus" href="https://www.atxnexus.com" rel="noopener">Powered by NEXUS</a>
     </div>
   </div>

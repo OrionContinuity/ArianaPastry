@@ -1,4 +1,4 @@
--- ═══ Arianna Bakehouse — site backend. Run ONCE in the project's SQL editor ═══
+-- ═══ Ariana Bakehouse — site backend. Run ONCE in the project's SQL editor ═══
 --
 -- Model (inherited from GBC, which inherited it from the NEXUS hardening):
 --   • public tables are READ-ONLY to anon — zero write policies, ever
@@ -57,7 +57,7 @@ create table if not exists public.ar_posts (
   excerpt      text,
   body         text,                            -- light markdown (see mdToHtml in journal)
   cover        text,
-  author       text default 'Arianna Bakehouse',
+  author       text default 'Ariana Bakehouse',
   tags         jsonb not null default '[]'::jsonb,
   read_minutes int default 4,
   published_at timestamptz not null default now(),
@@ -325,7 +325,7 @@ begin
       coalesce(nullif(btrim(p_row->>'slug'),''),
                'post-' || extract(epoch from now())::bigint),
       p_row->>'title', p_row->>'excerpt', p_row->>'body', p_row->>'cover',
-      coalesce(p_row->>'author','Arianna Bakehouse'),
+      coalesce(p_row->>'author','Ariana Bakehouse'),
       coalesce(p_row->'tags','[]'::jsonb),
       coalesce((p_row->>'read_minutes')::int, 4),
       coalesce((p_row->>'published_at')::timestamptz, now()),
@@ -535,6 +535,6 @@ on conflict (slug) do nothing;
 
 insert into public.ar_content (section, data) values
  ('hours', '{"lines":["Wednesday – Friday · 7am – 2pm","Saturday · 7am – 3pm","Sunday · 8am – 1pm","Closed Monday & Tuesday"]}'::jsonb),
- ('contact', '{"phone":"","email":"hello@ariannabakehouse.com","address":"Austin, Texas"}'::jsonb),
+ ('contact', '{"phone":"","email":"hello@arianabakehouse.com","address":"Austin, Texas"}'::jsonb),
  ('notice', '{"text":""}'::jsonb)
 on conflict (section) do nothing;

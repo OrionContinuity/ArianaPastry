@@ -1,4 +1,4 @@
-/* Arianna Bakehouse — shared shell for the journal pages.
+/* Ariana Bakehouse — shared shell for the journal pages.
    index.html keeps its CSS inline on purpose (it is the critical path). */
 :root{
   --ink:#2B2018; --ink-soft:#5A4A3C; --ink-faint:#756351;
