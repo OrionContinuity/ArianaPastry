@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Ariana Bakehouse">
+  <!-- The Case, reduced for small sizes. The full mark carries a shelf line and
+       three scalloped pastries; inside 16 pixels that is four horizontal bands in
+       a space with room for two, and it collapses into a grey lump. Here the shelf
+       and the scallops are dropped, the arch is heavier, and the loaf stays as a
+       solid bar — the silhouette survives and the detail stops fighting it.
+       Espresso tile so the mark holds against any browser-tab background. -->
+  <rect width="64" height="64" rx="14" fill="#2B2018"/>
+  <g fill="none" stroke="#E0A06E" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M15 48V33.5A17 17 0 0 1 49 33.5V48"/>
+    <path d="M12.5 48h39"/>
+  </g>
+  <rect x="21" y="37.6" width="22" height="6.6" rx="3.3" fill="#E0A06E"/>
+</svg>
