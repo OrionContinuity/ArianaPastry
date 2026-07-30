@@ -14,7 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const SITE = 'https://orioncontinuity.github.io/Arianna';
+const SITE = 'https://orioncontinuity.github.io/ArianaPastry';
 const ROOT = path.join(__dirname, '..');
 
 const POSTS = [

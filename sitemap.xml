@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://orioncontinuity.github.io/Arianna/</loc>
+    <loc>https://orioncontinuity.github.io/ArianaPastry/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://orioncontinuity.github.io/Arianna/journal/</loc>
+    <loc>https://orioncontinuity.github.io/ArianaPastry/journal/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://orioncontinuity.github.io/Arianna/journal/why-we-laminate-for-three-days/</loc>
+    <loc>https://orioncontinuity.github.io/ArianaPastry/journal/why-we-laminate-for-three-days/</loc>
     <lastmod>2026-07-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://orioncontinuity.github.io/Arianna/journal/the-cardamom-problem/</loc>
+    <loc>https://orioncontinuity.github.io/ArianaPastry/journal/the-cardamom-problem/</loc>
     <lastmod>2026-07-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://orioncontinuity.github.io/Arianna/journal/bake-it-darker/</loc>
+    <loc>https://orioncontinuity.github.io/ArianaPastry/journal/bake-it-darker/</loc>
     <lastmod>2026-07-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
