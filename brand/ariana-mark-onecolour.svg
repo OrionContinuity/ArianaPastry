@@ -2,10 +2,10 @@
   <title>Ariana Bakehouse — the case</title>
   <g fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
     <path d="M9 51.6V34A23 23 0 0 1 55 34v17.6" stroke="#2B2018"/>
-    <path d="M9 36H55" stroke="#2B2018" stroke-width="2.4"/>
     <path d="M14 36a5 5 0 0 1 10 0" stroke="#2B2018" stroke-width="2.4"/>
     <path d="M25.8 36a6.2 6.2 0 0 1 12.4 0" stroke="#2B2018" stroke-width="2.4"/>
     <path d="M40 36a5 5 0 0 1 10 0" stroke="#2B2018" stroke-width="2.4"/>
+    <path d="M9 36H55" stroke="#2B2018" stroke-width="2.4"/>
     <path d="M5.5 51.6h53" stroke="#2B2018"/>
   </g>
   <rect x="14" y="40.6" width="36" height="6.8" rx="3.4" fill="#2B2018"/>
