@@ -46,7 +46,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(251,246,239,.88);
   border-bottom:1px solid var(--hairline)}
 .nav{display:flex;align-items:center;gap:18px;padding-block:12px}
 .brand{display:flex;align-items:center;gap:11px;min-width:0}
-.brand .mark{width:30px;height:30px;flex:none}
+.brand .mark{width:34px;height:34px;flex:none;margin-top:-1px}
 .brand .wm{font-family:var(--disp);font-weight:700;font-size:18px;letter-spacing:-.025em;
   white-space:nowrap;display:flex;flex-direction:column;line-height:1.04}
 .brand .tag{font-family:var(--body);font-size:9.5px;font-weight:600;letter-spacing:.19em;
