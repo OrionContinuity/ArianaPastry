@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Back of house — Arianna Bakehouse</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#2B2018">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<style>
+  :root{
+    --ink:#2B2018; --ink-soft:#5A4A3C; --ink-faint:#756351;
+    --page:#FBF6EF; --card:#FFFDFA; --band:#F3EADD;
+    --copper:#9E4E26; --copper-deep:#7C3A1B; --copper-lite:#E0A06E; --pistachio:#4F6B3C;
+    --line:rgba(43,32,24,.13); --hairline:rgba(43,32,24,.08);
+    --r:12px; --r-sm:8px;
+    --shadow-1:0 1px 2px rgba(43,32,24,.06), 0 8px 20px -8px rgba(43,32,24,.16);
+    --disp:'Fraunces',Georgia,serif;
+    --body:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--body);background:var(--page);color:var(--ink);line-height:1.55;
+    -webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:var(--disp);font-weight:600;line-height:1.2;letter-spacing:-.02em}
+  a{color:var(--copper)}
+  .wrap{max-width:980px;margin:0 auto;padding:0 20px}
+  :focus-visible{outline:2px solid var(--copper);outline-offset:2px;border-radius:4px}
+
+  /* gate */
+  .gate{min-height:100dvh;display:grid;place-items:center;padding:24px}
+  .gate-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+    padding:32px;max-width:400px;width:100%;box-shadow:var(--shadow-1)}
+  .gate-card h1{font-size:24px;margin-bottom:6px}
+  .gate-card p{font-size:14px;color:var(--ink-soft);margin-bottom:20px}
+
+  header.top{background:var(--ink);color:#E9E3DB;padding:16px 0}
+  header.top .wrap{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  header.top h1{font-size:18px;color:#FBF6EF}
+  header.top .sp{margin-left:auto}
+  .out{background:none;border:1px solid rgba(233,227,219,.3);color:#E9E3DB;
+    border-radius:999px;padding:7px 15px;font:inherit;font-size:13px;cursor:pointer}
+
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;padding:18px 0;border-bottom:1px solid var(--line)}
+  .tab{background:none;border:1px solid var(--line);border-radius:999px;padding:9px 17px;
+    font:inherit;font-size:14px;font-weight:500;color:var(--ink-soft);cursor:pointer;min-height:40px}
+  .tab[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:var(--page);font-weight:600}
+
+  .panel{padding:26px 0 60px}
+  .panel[hidden]{display:none}
+  .panel h2{font-size:21px;margin-bottom:4px}
+  .panel .sub{font-size:14px;color:var(--ink-soft);margin-bottom:20px}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+    padding:18px;margin-bottom:14px;box-shadow:var(--shadow-1)}
+  .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .row .sp{margin-left:auto}
+
+  label{display:block;font-size:12px;font-weight:600;letter-spacing:.05em;
+    text-transform:uppercase;color:var(--ink-soft);margin-bottom:5px}
+  input,textarea,select{font-family:inherit;font-size:16px;color:var(--ink);background:var(--page);
+    border:1px solid var(--line);border-radius:var(--r-sm);padding:11px 13px;width:100%}
+  input:focus,textarea:focus,select:focus{outline:none;border-color:var(--copper);
+    box-shadow:0 0 0 3px rgba(158,78,38,.22)}
+  textarea{min-height:110px;resize:vertical;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .f{margin-bottom:13px}
+  @media(max-width:640px){.grid2,.grid3{grid-template-columns:1fr}}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;font:inherit;
+    font-size:14px;font-weight:600;padding:11px 20px;border-radius:999px;cursor:pointer;
+    border:0;min-height:42px}
+  .btn-p{background:var(--copper);color:#FBF6EF;border-bottom:3px solid var(--copper-deep)}
+  .btn-p:active{transform:translateY(1px);border-bottom-width:1px;margin-bottom:2px}
+  .btn-s{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+  .btn-d{background:none;color:var(--copper-deep);border:1px solid var(--line)}
+  .btn:disabled{opacity:.5;cursor:default}
+
+  .pill{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.07em;
+    text-transform:uppercase;padding:4px 10px;border-radius:999px;background:var(--band);
+    color:var(--ink-soft);border:1px solid var(--line)}
+  .pill.new{background:var(--copper);color:#FBF6EF;border-color:var(--copper)}
+  .pill.confirmed{background:var(--pistachio);color:#FBF6EF;border-color:var(--pistachio)}
+  .pill.done,.pill.cancelled{opacity:.7}
+
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:22px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+  .stat b{display:block;font-family:var(--disp);font-size:28px;font-variant-numeric:tabular-nums}
+  .stat span{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint)}
+
+  .msg{font-size:14px;margin-top:10px;min-height:20px}
+  .msg.ok{color:var(--pistachio);font-weight:600}
+  .msg.err{color:var(--copper-deep);font-weight:600}
+  .warn{background:var(--copper);color:#FBF6EF;border-radius:var(--r);padding:14px 18px;
+    font-size:14px;margin:18px 0}
+  .muted{color:var(--ink-faint);font-size:13.5px}
+  .items{list-style:none;font-size:13.5px;color:var(--ink-soft);margin-top:8px}
+  .items li{padding:3px 0}
+  .mono{font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+
+<!-- ══ gate ══ -->
+<div class="gate" id="gate">
+  <form class="gate-card" id="gateForm">
+    <h1>Back of house</h1>
+    <p>Enter the bakery passphrase.</p>
+    <div class="f">
+      <label for="pass">Passphrase</label>
+      <input id="pass" type="password" autocomplete="current-password" required>
+    </div>
+    <button class="btn btn-p" style="width:100%" id="gateBtn" type="submit">Unlock</button>
+    <p class="msg" id="gateMsg" role="status" aria-live="polite"></p>
+    <p class="muted" id="gateCfg" style="margin-top:14px"></p>
+  </form>
+</div>
+
+<!-- ══ app ══ -->
+<div id="app" hidden>
+  <header class="top">
+    <div class="wrap">
+      <h1>Arianna Bakehouse — back of house</h1>
+      <span class="sp"></span>
+      <a href="./" style="color:#C9B8A8;font-size:13px">View site &rarr;</a>
+      <button class="out" id="logout">Lock</button>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" data-tab="orders"   aria-selected="true">Orders</button>
+      <button class="tab" role="tab" data-tab="products" aria-selected="false">The case</button>
+      <button class="tab" role="tab" data-tab="journal"  aria-selected="false">Journal</button>
+      <button class="tab" role="tab" data-tab="text"     aria-selected="false">Page text</button>
+    </div>
+
+    <!-- ORDERS -->
+    <section class="panel" id="p-orders" role="tabpanel">
+      <h2>Orders</h2>
+      <p class="sub">New requests first. Confirm by phone or email, then move the order along.</p>
+      <div class="stats" id="stats"></div>
+      <div id="orderList"></div>
+    </section>
+
+    <!-- PRODUCTS -->
+    <section class="panel" id="p-products" role="tabpanel" hidden>
+      <h2>The case</h2>
+      <p class="sub">What customers can add to a tray. Prices are re-checked on the server at
+        order time, so this table is the only source of truth.</p>
+      <div class="card">
+        <h3 style="font-size:16px;margin-bottom:12px" id="pfTitle">Add an item</h3>
+        <form id="prodForm">
+          <input type="hidden" id="pf-id">
+          <div class="grid2">
+            <div class="f"><label for="pf-name">Name</label><input id="pf-name" required></div>
+            <div class="f"><label for="pf-slug">Slug</label><input id="pf-slug" placeholder="butter-croissant"></div>
+          </div>
+          <div class="grid3">
+            <div class="f"><label for="pf-cat">Category</label>
+              <select id="pf-cat">
+                <option value="pastry">Pastry</option><option value="tart">Tart</option>
+                <option value="cake">Cake</option><option value="bread">Bread</option>
+                <option value="drink">Drink</option>
+              </select></div>
+            <div class="f"><label for="pf-price">Price (dollars)</label>
+              <input id="pf-price" type="number" step="0.01" min="0" value="0"></div>
+            <div class="f"><label for="pf-unit">Unit</label>
+              <select id="pf-unit"><option>each</option><option>dozen</option><option>slice</option>
+                <option>whole</option><option>box</option><option>tray</option></select></div>
+          </div>
+          <div class="f"><label for="pf-blurb">Card line</label><input id="pf-blurb"></div>
+          <div class="f"><label for="pf-detail">Longer description</label><textarea id="pf-detail"></textarea></div>
+          <div class="grid3">
+            <div class="f"><label for="pf-glyph">Illustration</label>
+              <select id="pf-glyph">
+                <option>croissant</option><option>kouign</option><option>bun</option>
+                <option>canele</option><option>tart</option><option>galette</option>
+                <option>cake</option><option>loaf</option><option>box</option><option>coffee</option>
+              </select></div>
+            <div class="f"><label for="pf-lead">Notice (days)</label>
+              <input id="pf-lead" type="number" min="0" max="30" value="2"></div>
+            <div class="f"><label for="pf-sort">Sort</label>
+              <input id="pf-sort" type="number" value="100"></div>
+          </div>
+          <div class="grid3">
+            <div class="f"><label for="pf-badge">Badge</label>
+              <input id="pf-badge" placeholder="Weekends only"></div>
+            <div class="f"><label for="pf-feat">Featured</label>
+              <select id="pf-feat"><option value="false">No</option><option value="true">Yes</option></select></div>
+            <div class="f"><label for="pf-active">Active</label>
+              <select id="pf-active"><option value="true">Yes</option><option value="false">No</option></select></div>
+          </div>
+          <div class="f"><label for="pf-image">Photo URL (optional — blank uses the illustration)</label>
+            <input id="pf-image" placeholder="https://…"></div>
+          <div class="row">
+            <button class="btn btn-p" type="submit">Save item</button>
+            <button class="btn btn-s" type="button" id="pfClear">Clear</button>
+            <span class="msg" id="pfMsg" role="status" aria-live="polite"></span>
+          </div>
+        </form>
+      </div>
+      <div id="prodList"></div>
+    </section>
+
+    <!-- JOURNAL -->
+    <section class="panel" id="p-journal" role="tabpanel" hidden>
+      <h2>Journal</h2>
+      <p class="sub">Entries written here appear on the site immediately. Use blank lines between
+        paragraphs, <code>##</code> for a heading, <code>**bold**</code>, <code>*italic*</code>,
+        and <code>-</code> for a list.</p>
+      <div class="card">
+        <h3 style="font-size:16px;margin-bottom:12px" id="jfTitle">Write an entry</h3>
+        <form id="postForm">
+          <input type="hidden" id="jf-id">
+          <div class="grid2">
+            <div class="f"><label for="jf-title">Title</label><input id="jf-title" required></div>
+            <div class="f"><label for="jf-slug">Slug</label><input id="jf-slug" placeholder="why-we-bake-dark"></div>
+          </div>
+          <div class="f"><label for="jf-excerpt">Standfirst (one sentence)</label><input id="jf-excerpt"></div>
+          <div class="f"><label for="jf-body">Body</label>
+            <textarea id="jf-body" style="min-height:280px"></textarea></div>
+          <div class="grid3">
+            <div class="f"><label for="jf-tags">Tags (comma separated)</label>
+              <input id="jf-tags" placeholder="technique, bread"></div>
+            <div class="f"><label for="jf-mins">Read minutes</label>
+              <input id="jf-mins" type="number" min="1" max="60" value="4"></div>
+            <div class="f"><label for="jf-active">Published</label>
+              <select id="jf-active"><option value="true">Yes</option><option value="false">Draft</option></select></div>
+          </div>
+          <div class="row">
+            <button class="btn btn-p" type="submit">Save entry</button>
+            <button class="btn btn-s" type="button" id="jfClear">Clear</button>
+            <span class="msg" id="jfMsg" role="status" aria-live="polite"></span>
+          </div>
+        </form>
+      </div>
+      <div id="postList"></div>
+    </section>
+
+    <!-- PAGE TEXT -->
+    <section class="panel" id="p-text" role="tabpanel" hidden>
+      <h2>Page text</h2>
+      <p class="sub">Small pieces of copy the site reads live.</p>
+      <div class="card">
+        <h3 style="font-size:16px;margin-bottom:12px">Notice bar</h3>
+        <p class="muted" style="margin-bottom:10px">Shows above the Visit section. Leave blank to hide it.</p>
+        <div class="f"><input id="tx-notice" placeholder="Closed July 4th — back Friday."></div>
+        <button class="btn btn-p" data-save-text="notice">Save notice</button>
+        <span class="msg" id="txNoticeMsg" role="status" aria-live="polite"></span>
+      </div>
+      <div class="card">
+        <h3 style="font-size:16px;margin-bottom:12px">Hours</h3>
+        <p class="muted" style="margin-bottom:10px">One line each, in the form
+          <code>Days · Times</code> — the middle dot splits the two columns.</p>
+        <div class="f"><textarea id="tx-hours"></textarea></div>
+        <button class="btn btn-p" data-save-text="hours">Save hours</button>
+        <span class="msg" id="txHoursMsg" role="status" aria-live="polite"></span>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script>
+'use strict';
+var CFG = window.AR_CONFIG || {};
+var LIVE = !!(CFG.SUPA_URL && CFG.SUPA_KEY);
+var PASS = '';
+var $ = function (s) { return document.querySelector(s); };
+var $$ = function (s) { return [].slice.call(document.querySelectorAll(s)); };
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+function money(c) { return '$' + ((c || 0) / 100).toFixed(2); }
+function fmtDate(s) {
+  var d = new Date(String(s).slice(0, 10) + 'T00:00:00');
+  return isNaN(d) ? '' : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+function fmtWhen(s) {
+  var d = new Date(s);
+  return isNaN(d) ? '' : d.toLocaleString('en-US',
+    { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+}
+function say(el, text, ok) {
+  el.textContent = text;
+  el.className = 'msg ' + (ok ? 'ok' : 'err');
+  if (ok) setTimeout(function () { if (el.textContent === text) el.textContent = ''; }, 2600);
+}
+function api(path) {
+  return fetch(CFG.SUPA_URL + '/rest/v1/' + path, {
+    headers: { apikey: CFG.SUPA_KEY, Authorization: 'Bearer ' + CFG.SUPA_KEY },
+  }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
+}
+/* Supabase REST resolves with an error body rather than throwing — always read it. */
+function rpc(fn, body) {
+  return fetch(CFG.SUPA_URL + '/rest/v1/rpc/' + fn, {
+    method: 'POST',
+    headers: { apikey: CFG.SUPA_KEY, Authorization: 'Bearer ' + CFG.SUPA_KEY,
+               'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  }).then(function (r) {
+    return r.text().then(function (t) {
+      var data = null;
+      try { data = t ? JSON.parse(t) : null; } catch (e) { data = t; }
+      return { ok: r.ok, status: r.status, data: data };
+    });
+  }).catch(function (e) { return { ok: false, status: 0, data: String(e) }; });
+}
+
+/* ── gate ─────────────────────────────────────────────────────────── */
+if (!LIVE) {
+  $('#gateCfg').innerHTML = '<b>No backend configured.</b> Fill in <code>config.js</code> with '
+    + 'the project URL and anon key, and run <code>supabase-setup.sql</code> first. '
+    + 'Until then the public site runs on its built-in catalog and the order form '
+    + 'falls back to email.';
+  $('#gateBtn').disabled = true;
+}
+try {
+  var saved = sessionStorage.getItem('ar_pass');
+  if (saved && LIVE) { PASS = saved; openApp(); }
+} catch (e) {}
+
+$('#gateForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var v = $('#pass').value;
+  if (!v) return;
+  $('#gateBtn').disabled = true;
+  rpc('ar_check_admin', { p_pass: v }).then(function (r) {
+    $('#gateBtn').disabled = false;
+    if (r.ok && r.data === true) {
+      PASS = v;
+      try { sessionStorage.setItem('ar_pass', v); } catch (e2) {}
+      openApp();
+    } else {
+      say($('#gateMsg'), r.ok ? 'That passphrase does not match.' : 'Could not reach the database.', false);
+    }
+  });
+});
+
+$('#logout').addEventListener('click', function () {
+  PASS = '';
+  try { sessionStorage.removeItem('ar_pass'); } catch (e) {}
+  location.reload();
+});
+
+function openApp() {
+  $('#gate').hidden = true;
+  $('#app').hidden = false;
+  loadOrders(); loadProducts(); loadPosts(); loadText();
+}
+
+/* ── tabs ─────────────────────────────────────────────────────────── */
+$$('.tab').forEach(function (t) {
+  t.addEventListener('click', function () {
+    $$('.tab').forEach(function (o) { o.setAttribute('aria-selected', String(o === t)); });
+    $$('.panel').forEach(function (p) { p.hidden = p.id !== 'p-' + t.dataset.tab; });
+  });
+});
+
+/* ── orders ───────────────────────────────────────────────────────── */
+var STATUSES = ['new', 'confirmed', 'ready', 'done', 'cancelled'];
+function loadOrders() {
+  rpc('ar_list_orders', { p_pass: PASS }).then(function (r) {
+    var rows = (r.ok && Array.isArray(r.data)) ? r.data : [];
+    var el = $('#orderList');
+    if (!rows.length) {
+      el.innerHTML = '<p class="muted">No orders yet.</p>';
+    } else {
+      el.innerHTML = rows.map(function (o) {
+        var items = (o.items || []).map(function (i) {
+          return '<li>' + i.qty + ' &times; ' + esc(i.name) + ' — <span class="mono">'
+               + money(i.line_cents) + '</span></li>';
+        }).join('');
+        return '<div class="card"><div class="row">'
+          + '<b style="font-size:16px">' + esc(o.name) + '</b>'
+          + '<span class="pill ' + esc(o.status) + '">' + esc(o.status) + '</span>'
+          + '<span class="sp"></span><span class="muted mono">' + esc(fmtWhen(o.created_at)) + '</span>'
+          + '</div>'
+          + '<p class="muted" style="margin-top:6px">'
+          + (o.phone ? '<a href="tel:' + esc(o.phone) + '">' + esc(o.phone) + '</a>' : '')
+          + (o.phone && o.email ? ' · ' : '')
+          + (o.email ? '<a href="mailto:' + esc(o.email) + '">' + esc(o.email) + '</a>' : '')
+          + '</p>'
+          + '<p style="margin-top:6px;font-size:14px">Pickup: <b>'
+          + esc(o.pickup_date ? fmtDate(o.pickup_date) : 'not set') + '</b> '
+          + esc(o.pickup_time || '') + (o.occasion ? ' · ' + esc(o.occasion) : '') + '</p>'
+          + '<ul class="items">' + items + '</ul>'
+          + '<p style="margin-top:8px;font-weight:600" class="mono">Total ' + money(o.total_cents) + '</p>'
+          + (o.notes ? '<p class="muted" style="margin-top:8px;white-space:pre-wrap">'
+                     + esc(o.notes) + '</p>' : '')
+          + '<div class="row" style="margin-top:12px">'
+          + STATUSES.map(function (s) {
+              return '<button class="btn btn-s" data-status="' + s + '" data-id="' + o.id + '"'
+                   + (s === o.status ? ' disabled' : '') + '>' + s + '</button>';
+            }).join('')
+          + '</div></div>';
+      }).join('');
+    }
+  });
+  rpc('ar_analytics', { p_pass: PASS }).then(function (r) {
+    if (!r.ok || !r.data) { $('#stats').innerHTML = ''; return; }
+    var a = r.data;
+    $('#stats').innerHTML =
+        stat(a.new_orders, 'Awaiting reply')
+      + stat(a.orders_7d, 'Orders, 7 days')
+      + stat(money(a.revenue_7d || 0), 'Value, 7 days')
+      + stat(a.views_7d, 'Page views, 7 days');
+  });
+}
+function stat(v, label) {
+  return '<div class="stat"><b>' + esc(v) + '</b><span>' + esc(label) + '</span></div>';
+}
+document.addEventListener('click', function (e) {
+  var b = e.target.closest('[data-status]');
+  if (!b) return;
+  b.disabled = true;
+  rpc('ar_set_order_status', { p_pass: PASS, p_id: Number(b.dataset.id), p_status: b.dataset.status })
+    .then(function (r) { if (r.ok) loadOrders(); else b.disabled = false; });
+});
+
+/* ── products ─────────────────────────────────────────────────────── */
+function loadProducts() {
+  api('ar_products?select=*&order=sort.asc').then(function (rows) {
+    var el = $('#prodList');
+    if (!rows || !rows.length) { el.innerHTML = '<p class="muted">Nothing in the case yet.</p>'; return; }
+    el.innerHTML = rows.map(function (p) {
+      return '<div class="card"><div class="row">'
+        + '<b>' + esc(p.name) + '</b>'
+        + '<span class="pill">' + esc(p.category) + '</span>'
+        + (p.featured ? '<span class="pill">featured</span>' : '')
+        + (p.active ? '' : '<span class="pill">hidden</span>')
+        + '<span class="sp"></span><span class="mono">' + money(p.price_cents)
+        + ' / ' + esc(p.unit) + '</span></div>'
+        + '<p class="muted" style="margin-top:5px">' + esc(p.blurb || '') + '</p>'
+        + '<div class="row" style="margin-top:10px">'
+        + '<button class="btn btn-s" data-pedit=\'' + esc(JSON.stringify(p)) + '\'>Edit</button>'
+        + '<button class="btn btn-d" data-pdel="' + p.id + '" data-pname="' + esc(p.name) + '">Delete</button>'
+        + '</div></div>';
+    }).join('');
+  });
+}
+function prodForm(p) {
+  p = p || {};
+  $('#pf-id').value = p.id || '';
+  $('#pf-name').value = p.name || '';
+  $('#pf-slug').value = p.slug || '';
+  $('#pf-cat').value = p.category || 'pastry';
+  $('#pf-price').value = ((p.price_cents || 0) / 100).toFixed(2);
+  $('#pf-unit').value = p.unit || 'each';
+  $('#pf-blurb').value = p.blurb || '';
+  $('#pf-detail').value = p.detail || '';
+  $('#pf-glyph').value = p.glyph || 'croissant';
+  $('#pf-lead').value = p.lead_days == null ? 2 : p.lead_days;
+  $('#pf-sort').value = p.sort == null ? 100 : p.sort;
+  $('#pf-badge').value = p.badge || '';
+  $('#pf-feat').value = String(!!p.featured);
+  $('#pf-active').value = String(p.active !== false);
+  $('#pf-image').value = p.image || '';
+  $('#pfTitle').textContent = p.id ? 'Edit “' + p.name + '”' : 'Add an item';
+}
+$('#pfClear').addEventListener('click', function () { prodForm(null); $('#pfMsg').textContent = ''; });
+$('#prodForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var id = $('#pf-id').value ? Number($('#pf-id').value) : null;
+  var row = {
+    name: $('#pf-name').value.trim(), slug: $('#pf-slug').value.trim(),
+    category: $('#pf-cat').value,
+    price_cents: Math.round(parseFloat($('#pf-price').value || '0') * 100),
+    unit: $('#pf-unit').value, blurb: $('#pf-blurb').value.trim(),
+    detail: $('#pf-detail').value.trim(), glyph: $('#pf-glyph').value,
+    lead_days: Number($('#pf-lead').value || 0), sort: Number($('#pf-sort').value || 100),
+    badge: $('#pf-badge').value.trim() || null,
+    featured: $('#pf-feat').value === 'true', active: $('#pf-active').value === 'true',
+    image: $('#pf-image').value.trim() || null,
+  };
+  if (!row.name) return say($('#pfMsg'), 'Name is required.', false);
+  rpc('ar_save_product', { p_pass: PASS, p_id: id, p_row: row }).then(function (r) {
+    if (r.ok) { say($('#pfMsg'), 'Saved.', true); prodForm(null); loadProducts(); }
+    else say($('#pfMsg'), 'Save failed: ' + msgOf(r), false);
+  });
+});
+document.addEventListener('click', function (e) {
+  var ed = e.target.closest('[data-pedit]');
+  if (ed) {
+    prodForm(JSON.parse(ed.dataset.pedit));
+    $('#prodForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  var del = e.target.closest('[data-pdel]');
+  if (del) {
+    if (!confirm('Delete “' + del.dataset.pname + '” from the case?')) return;
+    rpc('ar_delete_product', { p_pass: PASS, p_id: Number(del.dataset.pdel) })
+      .then(function (r) { if (r.ok) loadProducts(); else alert('Delete failed: ' + msgOf(r)); });
+  }
+});
+
+/* ── journal ──────────────────────────────────────────────────────── */
+function loadPosts() {
+  api('ar_posts?select=*&order=published_at.desc').then(function (rows) {
+    var el = $('#postList');
+    if (!rows || !rows.length) { el.innerHTML = '<p class="muted">No entries yet.</p>'; return; }
+    el.innerHTML = rows.map(function (p) {
+      return '<div class="card"><div class="row">'
+        + '<b>' + esc(p.title) + '</b>'
+        + (p.active ? '' : '<span class="pill">draft</span>')
+        + '<span class="sp"></span><span class="muted mono">' + esc(fmtDate(p.published_at)) + '</span></div>'
+        + '<p class="muted" style="margin-top:5px">' + esc(p.excerpt || '') + '</p>'
+        + '<div class="row" style="margin-top:10px">'
+        + '<button class="btn btn-s" data-jedit=\'' + esc(JSON.stringify(p)) + '\'>Edit</button>'
+        + '<button class="btn btn-d" data-jdel="' + p.id + '" data-jname="' + esc(p.title) + '">Delete</button>'
+        + '<a class="btn btn-s" href="journal/#' + esc(p.slug) + '" target="_blank" rel="noopener">View</a>'
+        + '</div></div>';
+    }).join('');
+  });
+}
+function postForm(p) {
+  p = p || {};
+  $('#jf-id').value = p.id || '';
+  $('#jf-title').value = p.title || '';
+  $('#jf-slug').value = p.slug || '';
+  $('#jf-excerpt').value = p.excerpt || '';
+  $('#jf-body').value = p.body || '';
+  $('#jf-tags').value = (p.tags || []).join(', ');
+  $('#jf-mins').value = p.read_minutes == null ? 4 : p.read_minutes;
+  $('#jf-active').value = String(p.active !== false);
+  $('#jfTitle').textContent = p.id ? 'Edit “' + p.title + '”' : 'Write an entry';
+}
+$('#jfClear').addEventListener('click', function () { postForm(null); $('#jfMsg').textContent = ''; });
+$('#postForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var id = $('#jf-id').value ? Number($('#jf-id').value) : null;
+  var slug = $('#jf-slug').value.trim()
+    || $('#jf-title').value.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  var row = {
+    title: $('#jf-title').value.trim(), slug: slug,
+    excerpt: $('#jf-excerpt').value.trim(), body: $('#jf-body').value,
+    tags: $('#jf-tags').value.split(',').map(function (t) { return t.trim(); })
+           .filter(function (t) { return t; }),
+    read_minutes: Number($('#jf-mins').value || 4),
+    active: $('#jf-active').value === 'true',
+  };
+  if (!row.title) return say($('#jfMsg'), 'Title is required.', false);
+  rpc('ar_save_post', { p_pass: PASS, p_id: id, p_row: row }).then(function (r) {
+    if (r.ok) { say($('#jfMsg'), 'Saved.', true); postForm(null); loadPosts(); }
+    else say($('#jfMsg'), 'Save failed: ' + msgOf(r), false);
+  });
+});
+document.addEventListener('click', function (e) {
+  var ed = e.target.closest('[data-jedit]');
+  if (ed) {
+    postForm(JSON.parse(ed.dataset.jedit));
+    $('#postForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  var del = e.target.closest('[data-jdel]');
+  if (del) {
+    if (!confirm('Delete the entry “' + del.dataset.jname + '”?')) return;
+    rpc('ar_delete_post', { p_pass: PASS, p_id: Number(del.dataset.jdel) })
+      .then(function (r) { if (r.ok) loadPosts(); else alert('Delete failed: ' + msgOf(r)); });
+  }
+});
+
+/* ── page text ────────────────────────────────────────────────────── */
+function loadText() {
+  api('ar_content?select=section,data').then(function (rows) {
+    if (!rows) return;
+    rows.forEach(function (r) {
+      if (r.section === 'notice') $('#tx-notice').value = (r.data && r.data.text) || '';
+      if (r.section === 'hours') {
+        $('#tx-hours').value = ((r.data && r.data.lines) || []).join('\n');
+      }
+    });
+  });
+}
+document.addEventListener('click', function (e) {
+  var b = e.target.closest('[data-save-text]');
+  if (!b) return;
+  var key = b.dataset.saveText, data, el;
+  if (key === 'notice') {
+    data = { text: $('#tx-notice').value.trim() }; el = $('#txNoticeMsg');
+  } else {
+    data = { lines: $('#tx-hours').value.split('\n').map(function (l) { return l.trim(); })
+              .filter(function (l) { return l; }) };
+    el = $('#txHoursMsg');
+  }
+  b.disabled = true;
+  rpc('ar_save_content', { p_pass: PASS, p_section: key, p_data: data }).then(function (r) {
+    b.disabled = false;
+    say(el, r.ok ? 'Saved.' : 'Save failed: ' + msgOf(r), r.ok);
+  });
+});
+
+function msgOf(r) {
+  if (r && r.data && r.data.message) return r.data.message;
+  if (r && r.status) return 'HTTP ' + r.status;
+  return 'no connection';
+}
+</script>
+</body>
+</html>
