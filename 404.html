@@ -6,33 +6,75 @@
 <title>Sold out — Arianna Bakehouse</title>
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#FBF6EF">
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="color-scheme" content="light">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/site.css">
+<!-- Deliberately self-contained: this page is served for ANY missing path, at any
+     depth, so a relative stylesheet link cannot be trusted and a root-absolute one
+     breaks under a GitHub project page (/<repo>/). Everything it needs is inline. -->
 <style>
-  .lost{min-height:76dvh;display:grid;place-items:center;text-align:center;padding:40px 24px}
-  .lost h1{font-size:clamp(34px,7vw,60px);margin-bottom:14px}
-  .lost p{color:var(--ink-soft);font-size:17px;max-width:44ch;margin:0 auto 26px}
-  .lost svg{width:96px;height:96px;color:var(--copper);opacity:.75;margin-bottom:22px}
+  :root{
+    --ink:#2B2018; --ink-soft:#5A4A3C; --page:#FBF6EF; --card:#FFFDFA;
+    --copper:#9E4E26; --copper-deep:#7C3A1B; --line:rgba(43,32,24,.13);
+    --disp:'Fraunces',Georgia,'Times New Roman',serif;
+    --body:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--body);background:var(--page);color:var(--ink);line-height:1.6;
+    -webkit-font-smoothing:antialiased}
+  body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.035;
+    mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .lost{min-height:100dvh;display:grid;place-items:center;text-align:center;padding:40px 24px}
+  .lost h1{font-family:var(--disp);font-weight:600;letter-spacing:-.02em;
+    font-size:clamp(34px,7vw,60px);margin-bottom:14px;text-wrap:balance}
+  .lost p{color:var(--ink-soft);font-size:17px;max-width:44ch;margin:0 auto 26px;text-wrap:pretty}
+  .loaf{width:96px;height:96px;color:var(--copper);opacity:.75;margin:0 auto 22px}
+  .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;justify-content:center;font-family:var(--body);
+    font-size:15px;font-weight:600;padding:13px 24px;border-radius:999px;
+    text-decoration:none;color:inherit;transition:background .2s ease,border-color .2s ease}
+  .btn-p{background:var(--copper);color:#FBF6EF;border-bottom:3px solid var(--copper-deep)}
+  .btn-s{background:var(--card);border:1px solid var(--line);border-bottom:3px solid var(--line)}
+  .btn-p:active,.btn-s:active{transform:translateY(1px);border-bottom-width:1px;margin-bottom:2px}
+  @media(hover:hover){.btn-p:hover{background:var(--copper-deep)}
+    .btn-s:hover{border-color:var(--copper);color:var(--copper)}}
+  :focus-visible{outline:2px solid var(--copper);outline-offset:2px;border-radius:4px}
 </style>
 </head>
 <body>
 <main class="lost">
   <div>
-    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <svg class="loaf" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <ellipse cx="32" cy="34" rx="24" ry="16"/>
       <path d="M18 28.5c3.5-3 7-3 10.5 0M30 25.5c3.5-3 7-3 10.5 0M23 38c3.5-3 7-3 10.5 0M35.5 40c2.8-2.4 5.6-2.4 8.4 0"/>
     </svg>
     <h1>That one's gone</h1>
     <p>The page you were after isn't here — which, around a bakery, usually means
        it sold out. Try the case instead.</p>
-    <p style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-      <a class="btn btn-p" href="/">Back to the bakery</a>
-      <a class="btn btn-s" href="/journal/">Read the journal</a>
-    </p>
+    <div class="row">
+      <a class="btn btn-p" id="home" href="/">Back to the bakery</a>
+      <a class="btn btn-s" id="journal" href="/journal/">Read the journal</a>
+    </div>
   </div>
 </main>
+<script>
+/* A GitHub project page serves the site under /<repo>/, a custom domain serves it
+   at /. Derive the base from the first path segment on github.io so both work. */
+(function () {
+  var base = '/';
+  if (location.hostname.indexOf('github.io') !== -1) {
+    var seg = location.pathname.split('/')[1];
+    if (seg) base = '/' + seg + '/';
+  }
+  document.getElementById('home').href = base;
+  document.getElementById('journal').href = base + 'journal/';
+  var icon = document.createElement('link');
+  icon.rel = 'icon'; icon.type = 'image/svg+xml'; icon.href = base + 'favicon.svg';
+  document.head.appendChild(icon);
+})();
+</script>
 </body>
 </html>
