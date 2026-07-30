@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
-Disallow: /admin.html
+Disallow: /Arianna/admin.html
 
-Sitemap: https://www.ariannabakehouse.com/sitemap.xml
+Sitemap: https://orioncontinuity.github.io/Arianna/sitemap.xml
