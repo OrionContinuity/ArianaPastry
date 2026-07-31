@@ -14,6 +14,13 @@
   --body:'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box}
+/* The HTML `hidden` attribute only works through the UA rule [hidden]{display:none},
+   which ANY author display rule outranks. `.gate` sets display:grid and
+   `.tray-total` sets display:flex, so setting .hidden on them did nothing: a
+   successful admin login left the login box covering the screen, and an empty
+   tray still showed "Estimated total". Make hidden authoritative. */
+[hidden]{display:none !important}
+
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:76px}
 html,body{overflow-x:clip}
 body{font-family:var(--body);background:var(--page);color:var(--ink);line-height:1.6;
