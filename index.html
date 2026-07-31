@@ -118,6 +118,7 @@
   header.scrolled{box-shadow:0 8px 22px -18px rgba(43,32,24,.7);border-bottom-color:var(--line)}
   .nav{display:flex;align-items:center;gap:18px;padding-block:12px}
   .brand{display:flex;align-items:center;gap:11px;min-width:0}
+  .brand .mark-wrap{display:flex;align-items:center;flex:none}
   .brand .mark{width:34px;height:34px;flex:none;margin-top:-1px}
   .brand .wm{font-family:var(--disp);font-weight:700;font-size:18px;letter-spacing:-.025em;
     white-space:nowrap;display:flex;flex-direction:column;line-height:1.04}
@@ -456,6 +457,7 @@
 <header id="hdr">
   <div class="wrap nav">
     <a class="brand" href="#top" aria-label="Ariana Bakehouse — home">
+      <span class="mark-wrap" data-img="logo" title="Replace the logo">
       <svg class="mark" viewBox="0 0 64 64" aria-hidden="true">
         <g fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
           <path d="M9 51.6V34A23 23 0 0 1 55 34v17.6" stroke="#2B2018"/>
@@ -467,6 +469,7 @@
         </g>
         <rect x="14" y="40.6" width="36" height="6.8" rx="3.4" fill="#9E4E26"/>
       </svg>
+      </span>
       <span class="wm">Ariana<span class="tag">Bakehouse</span></span>
     </a>
     <nav class="nav-links" aria-label="Primary">
@@ -493,15 +496,15 @@
 <section class="hero wrap">
   <div class="hero-grid">
     <div>
-      <p class="kicker"><span>Austin, Texas</span><span class="no">Est. 2026</span></p>
-      <h1>Baked before dawn,<br>sold until <em>gone</em>.</h1>
-      <p class="lede">A small bakery with a short list and a long method. Croissants laminated
+      <p class="kicker"><span data-edit="hero.place">Austin, Texas</span><span class="no" data-edit="hero.est">Est. 2026</span></p>
+      <h1><span data-edit="hero.line1">Baked before dawn,</span><br><span data-edit="hero.line2">sold until</span> <em data-edit="hero.emph">gone</em>.</h1>
+      <p class="lede" data-edit="hero.lede">A small bakery with a short list and a long method. Croissants laminated
         over three days, kouign-amann caramelized to glass, and bread we bake darker
         than most people expect — because that is where the flavor is.</p>
       <div class="hero-cta">
-        <a class="btn btn-p" href="#case">See the case
+        <a class="btn btn-p" href="#case"><span data-edit="hero.cta1">See the case</span>
           <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        <a class="btn btn-s" href="#order">Pre-order for pickup</a>
+        <a class="btn btn-s" href="#order"><span data-edit="hero.cta2">Pre-order for pickup</span></a>
       </div>
     </div>
     <div class="case-art" role="img" aria-label="Illustration of a bakery case holding croissants, kouign-amann, canelés, tarts, cake and bread">
@@ -526,20 +529,20 @@
 <section class="trust">
   <ul class="wrap">
     <li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-      <b>Three-day lamination</b><span>No shortcuts in the cold room</span></li>
+      <b data-edit="trust.1.title">Three-day lamination</b><span data-edit="trust.1.sub">No shortcuts in the cold room</span></li>
     <li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg>
-      <b>Baked on site, daily</b><span>Nothing arrives frozen</span></li>
+      <b data-edit="trust.2.title">Baked on site, daily</b><span data-edit="trust.2.sub">Nothing arrives frozen</span></li>
     <li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10Z"/><circle cx="12" cy="11" r="2.5"/></svg>
-      <b>Texas flour &amp; butter</b><span>Named on request, always</span></li>
+      <b data-edit="trust.3.title">Texas flour &amp; butter</b><span data-edit="trust.3.sub">Named on request, always</span></li>
   </ul>
 </section>
 
 <!-- ══ THE CASE ══ -->
 <section class="sec wrap" id="case">
   <div class="sec-head">
-    <p class="kicker"><span>The Case</span><span class="no">01</span></p>
-    <h2>What is in today</h2>
-    <p class="lede">Everything is made in small numbers and sold until it runs out. Add what you
+    <p class="kicker"><span data-edit="case.kicker">The Case</span><span class="no">01</span></p>
+    <h2 data-edit="case.h2">What is in today</h2>
+    <p class="lede" data-edit="case.lede">Everything is made in small numbers and sold until it runs out. Add what you
       want to the tray — we will confirm by phone or email, and you pay when you collect.</p>
   </div>
 
@@ -548,7 +551,7 @@
       <button id="railPrev" aria-label="Previous"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
       <button id="railNext" aria-label="Next"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
     </div>
-    <h3 style="margin-bottom:14px">Fresh this week</h3>
+    <h3 style="margin-bottom:14px" data-edit="case.rail">Fresh this week</h3>
     <div class="rail" id="rail"></div>
   </div>
 
@@ -560,26 +563,26 @@
 <section class="sec band" id="story">
   <div class="wrap story-grid">
     <div>
-      <p class="kicker"><span>Our Method</span><span class="no">02</span></p>
-      <h2 style="margin:14px 0 14px">Slow is not a marketing word here</h2>
-      <p class="lede">It is a schedule. A croissant that reaches the case on Saturday was mixed
+      <p class="kicker"><span data-edit="story.kicker">Our Method</span><span class="no">02</span></p>
+      <h2 style="margin:14px 0 14px" data-edit="story.h2">Slow is not a marketing word here</h2>
+      <p class="lede" data-edit="story.lede">It is a schedule. A croissant that reaches the case on Saturday was mixed
         on Wednesday. That is inconvenient, expensive, and completely non-negotiable —
         because the alternative is bread shaped like a croissant.</p>
       <p style="margin-top:16px;font-size:15px;color:var(--ink-soft)">
-        We keep the list short on purpose. Fewer things, made properly, sold out by noon.</p>
+        <span data-edit="story.note">We keep the list short on purpose. Fewer things, made properly, sold out by noon.</span></p>
     </div>
     <ul class="story-list">
-      <li><span class="story-n">1</span><div><h3>The dough rests</h3>
-        <p>Flour, water, salt, a little yeast — then a full night in the cold so the gluten
+      <li><span class="story-n">1</span><div><h3 data-edit="story.1.h">The dough rests</h3>
+        <p data-edit="story.1.p">Flour, water, salt, a little yeast — then a full night in the cold so the gluten
            relaxes and the flour drinks. A dough that fights back tears its butter.</p></div></li>
-      <li><span class="story-n">2</span><div><h3>The butter stays cold</h3>
-        <p>Cultured butter locked in and turned three times, back to the cold between each fold.
+      <li><span class="story-n">2</span><div><h3 data-edit="story.2.h">The butter stays cold</h3>
+        <p data-edit="story.2.p">Cultured butter locked in and turned three times, back to the cold between each fold.
            Warm butter smears into the dough, and once it has smeared it is gone.</p></div></li>
-      <li><span class="story-n">3</span><div><h3>The proof is slow</h3>
-        <p>Shaped, then proofed long and cold. It is the difference between layers you can see
+      <li><span class="story-n">3</span><div><h3 data-edit="story.3.h">The proof is slow</h3>
+        <p data-edit="story.3.p">Shaped, then proofed long and cold. It is the difference between layers you can see
            and layers you can pull apart.</p></div></li>
-      <li><span class="story-n">4</span><div><h3>The bake goes dark</h3>
-        <p>Caramelization and the Maillard reaction are flavor being created. Stop early and
+      <li><span class="story-n">4</span><div><h3 data-edit="story.4.h">The bake goes dark</h3>
+        <p data-edit="story.4.p">Caramelization and the Maillard reaction are flavor being created. Stop early and
            that flavor simply never gets made.</p></div></li>
     </ul>
   </div>
@@ -588,9 +591,9 @@
 <!-- ══ JOURNAL ══ -->
 <section class="sec wrap" id="journal">
   <div class="sec-head">
-    <p class="kicker"><span>Journal</span><span class="no">03</span></p>
-    <h2>Notes from the bench</h2>
-    <p class="lede">What we are learning, testing, and getting wrong — written down so you can
+    <p class="kicker"><span data-edit="journal.kicker">Journal</span><span class="no">03</span></p>
+    <h2 data-edit="journal.h2">Notes from the bench</h2>
+    <p class="lede" data-edit="journal.lede">What we are learning, testing, and getting wrong — written down so you can
       steal it for your own kitchen.</p>
   </div>
   <div class="posts" id="postList"></div>
@@ -604,9 +607,9 @@
 <section class="sec band" id="order">
   <div class="wrap">
     <div class="sec-head">
-      <p class="kicker"><span>Pre-order</span><span class="no">04</span></p>
-      <h2>Reserve it before it sells out</h2>
-      <p class="lede">Tell us what you want and when you will collect it. We confirm every order
+      <p class="kicker"><span data-edit="order.kicker">Pre-order</span><span class="no">04</span></p>
+      <h2 data-edit="order.h2">Reserve it before it sells out</h2>
+      <p class="lede" data-edit="order.lede">Tell us what you want and when you will collect it. We confirm every order
         by hand — usually the same day — and you pay at the counter when you pick it up.
         No card needed now.</p>
     </div>
@@ -669,8 +672,8 @@
 <!-- ══ VISIT ══ -->
 <section class="sec wrap" id="visit">
   <div class="sec-head">
-    <p class="kicker"><span>Visit</span><span class="no">05</span></p>
-    <h2>Come by early</h2>
+    <p class="kicker"><span data-edit="visit.kicker">Visit</span><span class="no">05</span></p>
+    <h2 data-edit="visit.h2">Come by early</h2>
   </div>
   <div id="noticeSlot"></div>
   <div class="visit-grid">
@@ -707,7 +710,7 @@
       <div class="f-brand">
         <span class="disp" style="font-size:21px;color:#E9E3DB">Ariana</span>
         <span style="display:block;font-size:9.5px;font-weight:600;letter-spacing:.19em;text-transform:uppercase;color:var(--copper-lite);margin-top:2px">Bakehouse</span>
-        <p>A small bakery in Austin, Texas. Short list, long method, sold out by noon.</p>
+        <p data-edit="footer.blurb">A small bakery in Austin, Texas. Short list, long method, sold out by noon.</p>
       </div>
       <div><h4>The Bakery</h4><ul>
         <li><a href="#case">The Case</a></li><li><a href="#story">Our Method</a></li>
@@ -729,7 +732,7 @@
   <a class="d-order" href="#order">Tray <span class="count" id="dockCount">0</span></a>
 </nav>
 
-<script src="config.js?v=v2026.07.31-1621"></script>
+<script src="config.js?v=v2026.07.31-1652"></script>
 <script>
 /* ═══════════════════════════════════════════════════════════════════
    Ariana Bakehouse — one file, no dependencies.
@@ -1160,6 +1163,31 @@ function goLive() {
              + esc((bits[1] || '').trim()) + '</span></li>';
       }).join('');
     }
+    // Saved copy overrides the words baked into the page. textContent only —
+    // a stored string can never introduce markup into a public page.
+    if (byKey.copy) {
+      Object.keys(byKey.copy).forEach(function (k) {
+        if (typeof byKey.copy[k] !== 'string') return;
+        var el = document.querySelector('[data-edit="' + k.replace(/["\\]/g, '') + '"]');
+        if (el) el.textContent = byKey.copy[k];
+      });
+    }
+    if (byKey.images && byKey.images.logo) {
+      var holder = $('[data-img="logo"]');
+      if (holder) {
+        var lsvg = holder.querySelector('svg');
+        if (lsvg) lsvg.style.display = 'none';
+        var limg = holder.querySelector('img.ar-logo');
+        if (!limg) {
+          limg = document.createElement('img');
+          limg.className = 'ar-logo';
+          limg.alt = 'Ariana Bakehouse';
+          limg.style.cssText = 'width:34px;height:34px;object-fit:contain;display:block';
+          holder.insertBefore(limg, holder.firstChild);
+        }
+        limg.src = byKey.images.logo;
+      }
+    }
     if (byKey.notice && byKey.notice.text) {
       $('#noticeSlot').innerHTML = '<p class="notice">'
         + '<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>'
@@ -1174,6 +1202,22 @@ var _b = document.getElementById('build'); if (_b) _b.textContent = (window.AR_C
 renderFilters(); renderCatalog(); renderRail(); renderPosts(); renderTray();
 goLive();
 track('page_view');
+
+/* Hooks for edit mode. Kept tiny and read-only apart from goLive(), which simply
+   re-pulls everything the page already knows how to render. */
+window.AR = {
+  goLive: goLive,
+  products: function () { return PRODUCTS; },
+  render: function () { renderFilters(); renderCatalog(); renderRail(); renderPosts(); renderTray(); },
+};
+
+/* Edit mode is opt-in via ?edit=1 and still requires the passphrase, so ordinary
+   visitors never download the editor at all. */
+if (/[?&]edit=1/.test(location.search)) {
+  var _es = document.createElement('script');
+  _es.src = 'edit.js?v=' + ((window.AR_CONFIG || {}).BUILD || '0');
+  document.body.appendChild(_es);
+}
 </script>
 </body>
 </html>
