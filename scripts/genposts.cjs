@@ -239,6 +239,7 @@ ${JSON.stringify(ld, null, 2)}
       Short list, long method, sold out by noon.</p>
     <div class="f-bar">
       <span>&copy; ${new Date().getFullYear()} Ariana Bakehouse. Austin, Texas.</span>
+      <a class="f-admin" href="../../admin.html" rel="nofollow">Back of house</a>
       <a class="f-nexus" href="https://www.atxnexus.com" rel="noopener">Powered by NEXUS</a>
     </div>
   </div>

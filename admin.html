@@ -328,12 +328,18 @@ $('#gateForm').addEventListener('submit', function (e) {
   var v = $('#pass').value;
   if (!v) return;
   $('#gateBtn').disabled = true;
-  rpc('ar_check_admin', { p_pass: v }).then(function (r) {
+  // ar_admin_login, not ar_check_admin: the raw check is internal-only so it
+  // cannot be used as an unthrottled passphrase oracle. This one rate-limits to
+  // 8 failures per IP per 15 minutes and returns {ok, locked}.
+  rpc('ar_admin_login', { p_pass: v }).then(function (r) {
     $('#gateBtn').disabled = false;
-    if (r.ok && r.data === true) {
+    var d = (r && r.data) || {};
+    if (r.ok && d.ok === true) {
       PASS = v;
       try { sessionStorage.setItem('ar_pass', v); } catch (e2) {}
       openApp();
+    } else if (r.ok && d.locked === true) {
+      say($('#gateMsg'), 'Too many attempts. Try again in about 15 minutes.', false);
     } else {
       say($('#gateMsg'), r.ok ? 'That passphrase does not match.' : 'Could not reach the database.', false);
     }

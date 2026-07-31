@@ -436,13 +436,63 @@ begin
 end $$;
 
 -- ═══════════════════════════════════════════════════════════════════════
+--  9b. LOGIN GATE — throttled, because admin.html is linked from the public
+--      site. ar_check_admin itself is internal-only (see grants below) so it
+--      cannot be used as an unthrottled passphrase oracle; the browser calls
+--      ar_admin_login instead, which rate-limits per IP.
+-- ═══════════════════════════════════════════════════════════════════════
+create table if not exists public.ar_auth_attempts (
+  id         bigint generated always as identity primary key,
+  ip         text,
+  ok         boolean not null,
+  created_at timestamptz not null default now()
+);
+alter table public.ar_auth_attempts enable row level security;
+-- no policies: invisible to anon
+create index if not exists ar_auth_attempts_ip_idx
+  on public.ar_auth_attempts (ip, created_at desc);
+
+create or replace function public.ar_admin_login(p_pass text)
+returns jsonb language plpgsql security definer
+set search_path to 'public','extensions','pg_temp' as $$
+declare v_ip text; v_fails int; v_ok boolean;
+begin
+  begin
+    v_ip := coalesce(
+      current_setting('request.headers', true)::json->>'cf-connecting-ip',
+      current_setting('request.headers', true)::json->>'x-real-ip');
+  exception when others then v_ip := null;
+  end;
+
+  select count(*) into v_fails
+    from public.ar_auth_attempts
+   where ok = false
+     and ip is not distinct from v_ip
+     and created_at > now() - interval '15 minutes';
+
+  if v_fails >= 8 then
+    return jsonb_build_object('ok', false, 'locked', true);
+  end if;
+
+  v_ok := public.ar_check_admin(p_pass);
+  insert into public.ar_auth_attempts (ip, ok) values (v_ip, v_ok);
+
+  if v_ok and v_ip is not null then
+    delete from public.ar_auth_attempts
+     where ip = v_ip and ok = false and created_at > now() - interval '15 minutes';
+  end if;
+
+  return jsonb_build_object('ok', v_ok, 'locked', false);
+end $$;
+
+-- ═══════════════════════════════════════════════════════════════════════
 -- 10. GRANTS — strip Supabase's auto-grants, then hand back only what's needed
 -- ═══════════════════════════════════════════════════════════════════════
 do $$
 declare f text;
 begin
   foreach f in array array[
-    'ar_check_admin(text)',
+    'ar_admin_login(text)',
     'ar_submit_order(jsonb)',
     'ar_log_event(jsonb)',
     'ar_save_content(text,text,jsonb)',
@@ -461,6 +511,12 @@ begin
     execute 'grant  execute on function public.' || f || ' to anon, service_role';
   end loop;
 end $$;
+
+-- ar_check_admin is NOT granted to anon: it is called internally by every
+-- SECURITY DEFINER RPC above (as the owner), so those keep working, while the
+-- browser can only reach the rate-limited ar_admin_login.
+revoke execute on function public.ar_check_admin(text) from anon, public, authenticated;
+grant  execute on function public.ar_check_admin(text) to service_role;
 
 -- ═══════════════════════════════════════════════════════════════════════
 -- 11. SEED — the opening case and the first journal entries.
