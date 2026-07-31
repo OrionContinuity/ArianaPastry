@@ -591,6 +591,6 @@ on conflict (slug) do nothing;
 
 insert into public.ar_content (section, data) values
  ('hours', '{"lines":["Wednesday – Friday · 7am – 2pm","Saturday · 7am – 3pm","Sunday · 8am – 1pm","Closed Monday & Tuesday"]}'::jsonb),
- ('contact', '{"phone":"","email":"hello@arianabakehouse.com","address":"Austin, Texas"}'::jsonb),
+ ('contact', '{"phone":"","email":"alfredotenaortiz@gmail.com","address":"Austin, Texas"}'::jsonb),
  ('notice', '{"text":""}'::jsonb)
 on conflict (section) do nothing;

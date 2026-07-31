@@ -296,18 +296,29 @@ function api(path) {
 }
 /* Supabase REST resolves with an error body rather than throwing — always read it. */
 function rpc(fn, body) {
+  // A request that never settles leaves the UI frozen with the button disabled
+  // and nothing on screen, which is indistinguishable from "the button is dead".
+  // Always give it a deadline.
+  var ctl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+  var timer = setTimeout(function () { if (ctl) ctl.abort(); }, 12000);
   return fetch(CFG.SUPA_URL + '/rest/v1/rpc/' + fn, {
     method: 'POST',
     headers: { apikey: CFG.SUPA_KEY, Authorization: 'Bearer ' + CFG.SUPA_KEY,
                'Content-Type': 'application/json' },
     body: JSON.stringify(body),
+    signal: ctl ? ctl.signal : undefined,
   }).then(function (r) {
+    clearTimeout(timer);
     return r.text().then(function (t) {
       var data = null;
       try { data = t ? JSON.parse(t) : null; } catch (e) { data = t; }
       return { ok: r.ok, status: r.status, data: data };
     });
-  }).catch(function (e) { return { ok: false, status: 0, data: String(e) }; });
+  }).catch(function (e) {
+    clearTimeout(timer);
+    return { ok: false, status: 0, data: String(e && e.name === 'AbortError'
+      ? 'timed out after 12s' : (e && e.message) || e) };
+  });
 }
 
 /* ── gate ─────────────────────────────────────────────────────────── */
@@ -328,21 +339,43 @@ $('#gateForm').addEventListener('submit', function (e) {
   var v = $('#pass').value;
   if (!v) return;
   $('#gateBtn').disabled = true;
+  // Give immediate feedback. Without this, a slow or failed request looks
+  // exactly like a dead button.
+  $('#gateBtn').textContent = 'Checking…';
+  say($('#gateMsg'), 'Contacting the database…', true);
+
+  var done = function (text, ok) {
+    $('#gateBtn').disabled = false;
+    $('#gateBtn').textContent = 'Unlock';
+    say($('#gateMsg'), text, !!ok);
+  };
+
   // ar_admin_login, not ar_check_admin: the raw check is internal-only so it
   // cannot be used as an unthrottled passphrase oracle. This one rate-limits to
   // 8 failures per IP per 15 minutes and returns {ok, locked}.
   rpc('ar_admin_login', { p_pass: v }).then(function (r) {
-    $('#gateBtn').disabled = false;
     var d = (r && r.data) || {};
     if (r.ok && d.ok === true) {
       PASS = v;
       try { sessionStorage.setItem('ar_pass', v); } catch (e2) {}
+      $('#gateMsg').textContent = '';
+      $('#gateBtn').disabled = false;
+      $('#gateBtn').textContent = 'Unlock';
       openApp();
-    } else if (r.ok && d.locked === true) {
-      say($('#gateMsg'), 'Too many attempts. Try again in about 15 minutes.', false);
-    } else {
-      say($('#gateMsg'), r.ok ? 'That passphrase does not match.' : 'Could not reach the database.', false);
+      return;
     }
+    if (r.ok && d.locked === true) {
+      return done('Too many attempts. Try again in about 15 minutes.', false);
+    }
+    if (r.ok) return done('That passphrase does not match.', false);
+
+    // Anything else is a real failure — say exactly what it was rather than a
+    // vague apology, so it can be diagnosed from a screenshot.
+    var detail = (d && (d.message || d.hint)) || (typeof r.data === 'string' ? r.data : '');
+    done('Login failed — HTTP ' + (r.status || 'no response')
+         + (detail ? ' · ' + String(detail).slice(0, 120) : ''), false);
+  }).catch(function (e) {
+    done('Login error — ' + ((e && e.message) || e), false);
   });
 });
 
