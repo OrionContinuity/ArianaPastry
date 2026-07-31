@@ -722,7 +722,7 @@
   <a class="d-order" href="#order">Tray <span class="count" id="dockCount">0</span></a>
 </nav>
 
-<script src="config.js?v=v2026.07.31-1610"></script>
+<script src="config.js?v=v2026.07.31-1613"></script>
 <script>
 /* ═══════════════════════════════════════════════════════════════════
    Ariana Bakehouse — one file, no dependencies.
@@ -827,8 +827,13 @@ var SID = (function () {
 function track(type, meta) {
   if (!LIVE) return;
   try {
+    // The try/catch only guards the synchronous set-up. rpc() returns a promise,
+    // and a fire-and-forget promise that rejects becomes an unhandled rejection in
+    // the visitor's console every time the network hiccups. Swallow it here:
+    // analytics must never break the page, and must never look like it did.
     rpc('ar_log_event', { p: { type: type, path: location.pathname, sid: SID,
-      ref: document.referrer ? new URL(document.referrer).hostname : '', meta: meta || {} } });
+      ref: document.referrer ? new URL(document.referrer).hostname : '', meta: meta || {} } })
+      .catch(function () {});
   } catch (e) { /* analytics must never break the page */ }
 }
 
