@@ -486,6 +486,144 @@
     });
   }
 
+
+  /* ── journal ────────────────────────────────────────────────────────── */
+  function postSheet(post) {
+    var isNew = !post;
+    post = post || { tags: [], read_minutes: 4, active: true };
+    var f = {};
+    sheet({
+      title: isNew ? 'Write a journal entry' : 'Edit “' + (post.title || '') + '”',
+      hint: 'Leave a blank line between paragraphs. ## starts a heading, - starts a list, '
+          + '**bold** and *italic* work. Everything is escaped before it is rendered, so the '
+          + 'markup you type is the only markup that reaches the page.',
+      build: function (body) {
+        f.title = field(body, 'Title', post.title, 'text');
+        f.excerpt = field(body, 'Standfirst — one sentence', post.excerpt, 'text');
+        f.body = field(body, 'The entry', post.body, 'textarea');
+        f.body.style.minHeight = '260px';
+        var two = document.createElement('div'); two.className = 'ed-two'; body.appendChild(two);
+        f.tags = field(two, 'Tags, comma separated', (post.tags || []).join(', '), 'text');
+        f.mins = field(two, 'Read minutes', post.read_minutes == null ? 4 : post.read_minutes, 'number');
+        var l = document.createElement('label'); l.textContent = 'Status'; body.appendChild(l);
+        f.active = document.createElement('select');
+        [['true', 'Published'], ['false', 'Draft — hidden from the site']].forEach(function (o) {
+          var op = document.createElement('option'); op.value = o[0]; op.textContent = o[1];
+          if (String(post.active !== false) === o[0]) op.selected = true;
+          f.active.appendChild(op);
+        });
+        body.appendChild(f.active);
+      },
+      onSave: function (close, fail) {
+        var title = f.title.value.trim();
+        if (!title) return fail('Give the entry a title.');
+        var row = {
+          title: title,
+          slug: post.slug || title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+          excerpt: f.excerpt.value.trim(),
+          body: f.body.value,
+          tags: f.tags.value.split(',').map(function (t) { return t.trim(); })
+                  .filter(function (t) { return t; }),
+          read_minutes: Number(f.mins.value || 4),
+          active: f.active.value === 'true',
+        };
+        rpc('ar_save_post', { p_pass: PASS, p_id: post.id || null, p_row: row }).then(function (r) {
+          if (!r.ok) return fail('Save failed — HTTP ' + (r.status || 'no response'));
+          close(); toast(isNew ? 'Entry published' : 'Saved'); refresh();
+        });
+      },
+      onDelete: isNew ? null : function (close, fail) {
+        if (!confirm('Delete the entry “' + post.title + '”?')) return;
+        rpc('ar_delete_post', { p_pass: PASS, p_id: post.id }).then(function (r) {
+          if (!r.ok) return fail('Could not delete — HTTP ' + (r.status || '?'));
+          close(); toast('Entry deleted'); refresh();
+        });
+      },
+    });
+  }
+
+  function openPostBySlug(slug) {
+    if (!slug) return postSheet(null);
+    api('ar_posts?select=*&slug=eq.' + encodeURIComponent(slug) + '&limit=1')
+      .then(function (rows) {
+        if (rows && rows[0]) return postSheet(rows[0]);
+        // A seed entry that has never been saved to the database has no row yet.
+        // Open it as new, pre-filled from the slug, rather than failing silently.
+        toast('That entry is not in the database yet — saving will add it');
+        postSheet({ slug: slug, tags: [], read_minutes: 4, active: true });
+      });
+  }
+
+  function slugFromHref(href) {
+    if (!href) return '';
+    var h = href.split('?')[0].split('&')[0];          // links carry ?edit=1 by then
+    var m = h.match(/#([a-z0-9-]+)$/i);                 // storefront teaser: journal/#slug
+    if (m) return m[1];
+    m = h.match(/([a-z0-9-]+)\/?$/i);                   // journal index row: slug/
+    if (m && m[1] !== 'journal' && m[1] !== 'index.html') return m[1];
+    return '';
+  }
+
+  function decorateJournal() {
+    // storefront teaser cards, and the rows on the journal index
+    $$('.post, .j-item').forEach(function (card) {
+      if (card.querySelector('.ed-card')) return;
+      if (card.id === 'postView') return;
+      var slug = slugFromHref(card.getAttribute('href'));
+      if (!slug) return;
+      card.style.position = 'relative';
+
+      var box = document.createElement('div');
+      box.className = 'ed-card';
+
+      var ed = document.createElement('button');
+      ed.type = 'button'; ed.title = 'Edit this entry'; ed.textContent = '✎';
+      ed.addEventListener('click', function (e) {
+        e.preventDefault(); e.stopPropagation(); openPostBySlug(slug);
+      });
+
+      var rm = document.createElement('button');
+      rm.type = 'button'; rm.className = 'del'; rm.title = 'Delete this entry'; rm.textContent = '✕';
+      rm.addEventListener('click', function (e) {
+        e.preventDefault(); e.stopPropagation();
+        api('ar_posts?select=id,title&slug=eq.' + encodeURIComponent(slug) + '&limit=1')
+          .then(function (rows) {
+            var p = rows && rows[0];
+            if (!p) return toast('That entry is not in the database yet', true);
+            if (!confirm('Delete the entry “' + p.title + '”?')) return;
+            rpc('ar_delete_post', { p_pass: PASS, p_id: p.id }).then(function (r) {
+              if (r.ok) { toast('Entry deleted'); refresh(); }
+              else toast('Could not delete it', true);
+            });
+          });
+      });
+
+      box.appendChild(ed); box.appendChild(rm);
+      card.appendChild(box);
+    });
+
+    // one "write an entry" button, wherever the journal appears
+    var host = $('#postList') || $('#jList');
+    if (host && !$('#edPost')) {
+      var b = document.createElement('button');
+      b.id = 'edPost'; b.className = 'ed-add'; b.type = 'button';
+      b.textContent = '＋ Write a journal entry';
+      b.addEventListener('click', function () { postSheet(null); });
+      host.parentNode.insertBefore(b, host.nextSibling);
+    }
+  }
+
+  /* Keep edit mode while moving around the site, so the journal index and the
+     storefront are one continuous editing session rather than two. */
+  function keepEditLinks() {
+    $$('a[href]').forEach(function (a) {
+      var h = a.getAttribute('href');
+      if (!h || /^(https?:|mailto:|tel:|#)/.test(h)) return;
+      if (h.indexOf('edit=1') !== -1) return;
+      a.setAttribute('href', h + (h.indexOf('?') === -1 ? '?' : '&') + 'edit=1');
+    });
+  }
+
   /* ── wiring ─────────────────────────────────────────────────────────── */
   function refresh() {
     if (window.AR && window.AR.goLive) window.AR.goLive();
@@ -540,6 +678,8 @@
       cat.parentNode.insertBefore(b, cat.nextSibling);
     }
 
+    decorateJournal();
+
     // hours panel
     var hours = $('#hoursList');
     if (hours && !hours._edWired) {
@@ -586,6 +726,7 @@
     bar();
     bindStatic();
     loadCopy().then(function () { setTimeout(decorate, 400); });
+    keepEditLinks();
     toast('Edit mode — changes are live the moment you save');
   }
 

@@ -12,7 +12,7 @@
    Leave both blank to run in STATIC mode: the baked-in catalog and journal
    render, and the pre-order form falls back to a pre-filled email. */
 window.AR_CONFIG = {
-  BUILD: 'v2026.07.31-1652',
+  BUILD: 'v2026.07.31-1700',
   SUPA_URL: 'https://unfjnmrjmidrfmmtyhpe.supabase.co',
   SUPA_KEY: 'sb_publishable_vRef972pow7wEIjE-PCANg_zx2OShFA',
 };
