@@ -295,6 +295,24 @@ function api(path) {
   }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
 }
 /* Supabase REST resolves with an error body rather than throwing — always read it. */
+/* PostgREST can hand back a jsonb return value in more than one shape depending
+   on version and Accept negotiation: the object itself, the object as a JSON
+   string, or the object wrapped in a single-element array. Reading only one of
+   those shapes turns a successful login into "that passphrase does not match" —
+   which is exactly what happened. Normalise before inspecting. */
+function unwrap(x) {
+  for (var i = 0; i < 3; i++) {
+    if (x == null) return {};
+    if (Array.isArray(x)) { x = x[0]; continue; }
+    if (typeof x === 'string') {
+      try { x = JSON.parse(x); } catch (e) { return {}; }
+      continue;
+    }
+    return (typeof x === 'object') ? x : {};
+  }
+  return {};
+}
+
 function rpc(fn, body) {
   // A request that never settles leaves the UI frozen with the button disabled
   // and nothing on screen, which is indistinguishable from "the button is dead".
@@ -354,7 +372,7 @@ $('#gateForm').addEventListener('submit', function (e) {
   // cannot be used as an unthrottled passphrase oracle. This one rate-limits to
   // 8 failures per IP per 15 minutes and returns {ok, locked}.
   rpc('ar_admin_login', { p_pass: v }).then(function (r) {
-    var d = (r && r.data) || {};
+    var d = unwrap(r && r.data);
     if (r.ok && d.ok === true) {
       PASS = v;
       try { sessionStorage.setItem('ar_pass', v); } catch (e2) {}
@@ -440,8 +458,8 @@ function loadOrders() {
     }
   });
   rpc('ar_analytics', { p_pass: PASS }).then(function (r) {
-    if (!r.ok || !r.data) { $('#stats').innerHTML = ''; return; }
-    var a = r.data;
+    var a = unwrap(r && r.data);
+    if (!r.ok || !a || a.orders_7d === undefined) { $('#stats').innerHTML = ''; return; }
     $('#stats').innerHTML =
         stat(a.new_orders, 'Awaiting reply')
       + stat(a.orders_7d, 'Orders, 7 days')
