@@ -351,6 +351,7 @@
     font-size:12.5px;color:#A8998A}
   .f-admin{font-size:12.5px;color:#A8998A;border-bottom:1px solid transparent}
   @media(hover:hover){.f-admin:hover{color:var(--copper-lite);border-bottom-color:var(--copper-lite)}}
+  .f-build{font-size:11px;color:#8A7A6B;font-variant-numeric:tabular-nums}
   .f-nexus{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--copper-lite);font-weight:600}
 
   /* ── mobile dock ────────────────────────────────────────── */
@@ -710,6 +711,7 @@
     <div class="f-bar">
       <span>&copy; <span id="yr">2026</span> Ariana Bakehouse. Austin, Texas.</span>
       <a class="f-admin" href="admin.html" rel="nofollow">Back of house</a>
+      <span id="build" class="f-build"></span>
       <a class="f-nexus" href="https://www.atxnexus.com" rel="noopener">Powered by NEXUS</a>
     </div>
   </div>
@@ -720,6 +722,7 @@
   <a class="d-order" href="#order">Tray <span class="count" id="dockCount">0</span></a>
 </nav>
 
+<script src="config.js?v=v2026.07.31-1610"></script>
 <script>
 /* ═══════════════════════════════════════════════════════════════════
    Ariana Bakehouse — one file, no dependencies.
@@ -1155,6 +1158,7 @@ function goLive() {
 
 /* ── boot ─────────────────────────────────────────────────────────── */
 $('#yr').textContent = String(new Date().getFullYear());
+var _b = document.getElementById('build'); if (_b) _b.textContent = (window.AR_CONFIG||{}).BUILD||'';
 renderFilters(); renderCatalog(); renderRail(); renderPosts(); renderTray();
 goLive();
 track('page_view');

@@ -14,6 +14,15 @@
 const fs = require('fs');
 const path = require('path');
 
+// read the build marker straight out of config.js so entries carry the same one
+const VERSION_STAMP = (() => {
+  try {
+    const cfg = fs.readFileSync(path.join(__dirname, '..', 'config.js'), 'utf8');
+    const m = cfg.match(/BUILD:\s*'([^']*)'/);
+    return m ? m[1] : '';
+  } catch (e) { return ''; }
+})();
+
 const SITE = 'https://orioncontinuity.github.io/ArianaPastry';
 const ROOT = path.join(__dirname, '..');
 
@@ -240,6 +249,7 @@ ${JSON.stringify(ld, null, 2)}
     <div class="f-bar">
       <span>&copy; ${new Date().getFullYear()} Ariana Bakehouse. Austin, Texas.</span>
       <a class="f-admin" href="../../admin.html" rel="nofollow">Back of house</a>
+      <span class="f-build">${VERSION_STAMP}</span>
       <a class="f-nexus" href="https://www.atxnexus.com" rel="noopener">Powered by NEXUS</a>
     </div>
   </div>

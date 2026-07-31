@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Back of house — Ariana Bakehouse</title>
 <meta name="robots" content="noindex, nofollow">
+<meta http-equiv="cache-control" content="no-cache, must-revalidate">
 <meta name="theme-color" content="#2B2018">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <style>
@@ -113,6 +114,7 @@
     <button class="btn btn-p" style="width:100%" id="gateBtn" type="submit">Unlock</button>
     <p class="msg" id="gateMsg" role="status" aria-live="polite"></p>
     <p class="muted" id="gateCfg" style="margin-top:14px"></p>
+    <p class="muted" id="buildTag" style="margin-top:6px;font-size:11.5px"></p>
   </form>
 </div>
 
@@ -261,7 +263,7 @@
   </div>
 </div>
 
-<script src="config.js"></script>
+<script src="config.js?v=v2026.07.31-1610"></script>
 <script>
 'use strict';
 var CFG = window.AR_CONFIG || {};
@@ -340,6 +342,8 @@ function rpc(fn, body) {
 }
 
 /* ── gate ─────────────────────────────────────────────────────────── */
+var _bt = document.getElementById('buildTag');
+if (_bt) _bt.textContent = 'build ' + ((window.AR_CONFIG||{}).BUILD || 'unknown');
 if (!LIVE) {
   $('#gateCfg').innerHTML = '<b>No backend configured.</b> Fill in <code>config.js</code> with '
     + 'the project URL and anon key, and run <code>supabase-setup.sql</code> first. '

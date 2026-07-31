@@ -92,12 +92,13 @@
     <div class="f-bar">
       <span>&copy; <span id="yr">2026</span> Ariana Bakehouse. Austin, Texas.</span>
       <a class="f-admin" href="../admin.html" rel="nofollow">Back of house</a>
+      <span id="build" class="f-build"></span>
       <a class="f-nexus" href="https://www.atxnexus.com" rel="noopener">Powered by NEXUS</a>
     </div>
   </div>
 </footer>
 
-<script src="../config.js"></script>
+<script src="../config.js?v=v2026.07.31-1610"></script>
 <script>
 'use strict';
 /* Seed entries. Each has a real static page for crawlers; entries written later
@@ -211,6 +212,7 @@ function route() {
 }
 
 $('#yr').textContent = String(new Date().getFullYear());
+var _b = document.getElementById('build'); if (_b) _b.textContent = (window.AR_CONFIG||{}).BUILD||'';
 renderList();
 route();
 window.addEventListener('hashchange', route);
