@@ -248,10 +248,10 @@ ${JSON.stringify(ld, null, 2)}
       Short list, long method, sold out by noon.</p>
     <div class="f-bar">
       <span>&copy; ${new Date().getFullYear()} Ariana Bakehouse. Austin, Texas.</span>
-      <a class="f-admin" href="../../admin.html" rel="nofollow">Back of house</a>
-      <span class="f-build">${VERSION_STAMP}</span>
-      <a class="f-nexus" href="https://www.atxnexus.com" rel="noopener">Powered by NEXUS</a>
+      <a class="f-admin" href="../../admin.html" rel="nofollow" aria-label="Site administration">admin</a>
+      <span class="f-ver" aria-hidden="true">${VERSION_STAMP}</span>
     </div>
+    <div class="f-powered">powered by <b>NEXUS</b></div>
   </div>
 </footer>
 </body>
