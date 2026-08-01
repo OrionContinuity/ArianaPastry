@@ -519,6 +519,34 @@ revoke execute on function public.ar_check_admin(text) from anon, public, authen
 grant  execute on function public.ar_check_admin(text) to service_role;
 
 -- ═══════════════════════════════════════════════════════════════════════
+-- 10b. STRIP THE ANON TABLE GRANTS (defence in depth)
+--      Supabase auto-grants anon INSERT/UPDATE/DELETE/TRUNCATE on every new
+--      table. RLS with zero write policies already refuses them, so this is
+--      not a hole today — but the privilege sits there waiting for one future
+--      policy slip. Remove the privilege as well as the policy. The SECURITY
+--      DEFINER RPCs run as the owner, so none of them are affected.
+--      (Found by the Eighty Seis session on es_ and backported here.)
+-- ═══════════════════════════════════════════════════════════════════════
+do $$
+declare t text;
+begin
+  foreach t in array array[
+    'ar_content','ar_products','ar_posts','ar_photos',
+    'ar_orders','ar_events','ar_admin','ar_auth_attempts'
+  ]
+  loop
+    execute format(
+      'revoke insert, update, delete, truncate, references, trigger on public.%I from anon', t);
+  end loop;
+
+  -- customer data and the credential store: anon must not even be able to try
+  foreach t in array array['ar_orders','ar_events','ar_admin','ar_auth_attempts']
+  loop
+    execute format('revoke select on public.%I from anon', t);
+  end loop;
+end $$;
+
+-- ═══════════════════════════════════════════════════════════════════════
 -- 11. SEED — the opening case and the first journal entries.
 --     Everything here is editable in admin.html afterward.
 -- ═══════════════════════════════════════════════════════════════════════
